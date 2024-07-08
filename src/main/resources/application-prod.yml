@@ -4,3 +4,6 @@ server:
       charset: utf-8
       force: true
   port: 5000
+
+allow:
+  host: http//mtcoding.com:3000
