@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const PostItem = ({ id, title }) => {
 
-
+  
 
   return (
     <Card className="mb-2">
