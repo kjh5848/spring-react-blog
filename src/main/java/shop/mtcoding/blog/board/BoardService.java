@@ -1,6 +1,8 @@
 package shop.mtcoding.blog.board;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +68,11 @@ public class BoardService {
         boardJPARepository.deleteById(boardId);
     }
 
+    public BoardResponse.MainV2DTO 글목록조회V2(Pageable pageable) {
+        Page<Board> boardPG = boardJPARepository.findAll(pageable);
+        return new BoardResponse.MainV2DTO(boardPG);
+    }
+
     public List<BoardResponse.MainDTO> 글목록조회() {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         List<Board> boardList = boardJPARepository.findAll(sort);
@@ -73,7 +80,7 @@ public class BoardService {
         return boardList.stream().map(board -> new BoardResponse.MainDTO(board)).toList();
     }
 
-    public BoardResponse.DetailDTO 글상세보기(int boardId, User sessionUser) {
+    public BoardResponse.DetailDTO 글상세보기(int boardId, SessionUser sessionUser) {
         Board board = boardJPARepository.findByIdJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const JoinForm = (props) => {
   const navigate = useNavigate();
-
+  
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -24,7 +24,7 @@ const JoinForm = (props) => {
 
     // 유효성 검사
     try {
-      await axios({
+      let response = await axios({
         url: "http://localhost:8080/join",
         method: "post",
         headers: {
@@ -32,7 +32,7 @@ const JoinForm = (props) => {
         },
         data: user,
       });
-
+      console.log(response);
       navigate("/loginForm");
     } catch (e) {
       console.log(e);

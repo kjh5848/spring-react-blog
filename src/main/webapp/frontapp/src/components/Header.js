@@ -1,11 +1,18 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../store";
 
 function Header(props) {
 
   const isLogin = useSelector((state) => state.isLogin)
+  const dispatch = useDispatch()
+
+  function submitLogout(){
+    localStorage.removeItem("jwt")
+    dispatch(logout())
+  }
 
   return (
     <div>
@@ -21,7 +28,7 @@ function Header(props) {
               <Link to="/saveForm" className="nav-link">
               글쓰기
               </Link>
-              <Link className="nav-link">로그아웃</Link>   
+              <Link className="nav-link" onClick={submitLogout}>로그아웃</Link>   
               </>
              : 
               <>

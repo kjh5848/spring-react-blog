@@ -15,6 +15,14 @@ import shop.mtcoding.blog.user.User;
 
 // /api/** 인증 필요 주소
 public class LoginInterceptor implements HandlerInterceptor{
+
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        HttpSession session = request.getSession();
+        session.invalidate();
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 

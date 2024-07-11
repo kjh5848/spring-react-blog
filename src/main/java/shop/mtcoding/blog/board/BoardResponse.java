@@ -1,7 +1,9 @@
 package shop.mtcoding.blog.board;
 
 import lombok.Data;
+import org.springframework.data.domain.Page;
 import shop.mtcoding.blog.reply.Reply;
+import shop.mtcoding.blog.user.SessionUser;
 import shop.mtcoding.blog.user.User;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class BoardResponse {
         private boolean isOwner;
         private List<ReplyDTO> replies = new ArrayList<>();
 
-        public DetailDTO(Board board, User sessionUser) {
+        public DetailDTO(Board board, SessionUser sessionUser) {
             this.id = board.getId();
             this.title = board.getTitle();
             this.content = board.getContent();
@@ -55,7 +57,7 @@ public class BoardResponse {
             private String username; // 댓글 작성자 이름
             private boolean isOwner;
 
-            public ReplyDTO(Reply reply, User sessionUser) {
+            public ReplyDTO(Reply reply, SessionUser sessionUser) {
                 this.id = reply.getId(); // lazy loading 발동
                 this.comment = reply.getComment();
                 this.userId = reply.getUser().getId();
@@ -78,5 +80,36 @@ public class BoardResponse {
             this.id = board.getId();
             this.title = board.getTitle();
         }
+    }
+
+    // 게시글 목록보기 화면
+    @Data
+    public static class MainV2DTO {
+        private Integer totalPage;
+        private Integer number; // 현재 페이지
+        private Boolean isFirst;
+        private Boolean isLast;
+
+        private List<BoardDTO> boards;
+
+        public MainV2DTO(Page<Board> boardPG) {
+            this.totalPage = boardPG.getTotalPages();
+            this.number = boardPG.getNumber();
+            this.isFirst = boardPG.isFirst();
+            this.isLast = boardPG.isLast();
+            this.boards = boardPG.getContent().stream().map(BoardDTO::new).toList();
+        }
+
+        @Data
+        public class BoardDTO {
+            private int id;
+            private String title;
+
+            public BoardDTO(Board board) {
+                this.id = board.getId();
+                this.title = board.getTitle();
+            }
+        }
+
     }
 }
